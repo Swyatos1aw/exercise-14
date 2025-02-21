@@ -1,0 +1,14 @@
+import matplotlib.pyplot as plt
+
+import numpy as np
+
+t=np.linspace(1,5,51)
+y=5*np.cos(10*t)*np.sin(3*t)/(t**(1/2))
+
+plt.plot(t,y,label='5*np.cos(10*t)*np.sin(3*t)/(t**(1/2))',color="red",linewidth=5)
+plt.title('My plot',fontsize=15)
+plt.xlabel('t',fontsize=12, color='green')
+plt.ylabel('y',fontsize=12, color='green')
+
+plt.legend()
+plt.show()
