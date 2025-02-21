@@ -1,0 +1,15 @@
+from turtle import title
+import matplotlib.pyplot as plt
+import numpy as np
+print("Зріст учнів класу:")
+x=["Alex","Anton","Vasiliy","Dmytro","Maksym","Alina","Anna","Elena","Victoria","Maria"]
+y=[202,195,194,191,190,188,185,178,173,165]
+np.array(x)
+np.array(y)
+
+fig,ax=plt.subplots()
+ax.pie(y,labels=x,autopct='%1.1f%%',startangle=90)
+ax.axis("equal")
+plt.legend(title="Ім'я учнів",bbox_to_anchor=(1,1))
+plt.title("Розподіл учнів у відсотковому форматі")
+plt.show()
