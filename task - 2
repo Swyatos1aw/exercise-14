@@ -1,0 +1,90 @@
+import csv
+import matplotlib.pyplot as plt
+
+# Функція для загрузки данних из CSV
+def load_data(filepath):
+    countries = {}
+    years = []
+
+    with open(filepath, 'r', encoding='utf-8') as file:
+        reader = csv.reader(file)
+        header = next(reader)
+
+        for col in header[4:]:
+            if '[YR' in col:
+                year = col.split(' ')[0]
+                years.append(int(year))
+
+        for row in reader:
+            if row[0] and row[2]:
+                country_name = row[2]
+                data = [int(value) if value and value.isdigit() else None for value in row[4:]]
+                countries[country_name] = data
+
+    return countries, years
+
+
+# Функція для створення графіка
+def plot_country_data(countries_list, countries, years):
+    sorted_years_data = sorted(zip(years, countries['Japan']))
+    years, japan_data = zip(*sorted_years_data)
+    countries['Japan'] = list(japan_data)
+    plt.figure(figsize=(12, 7))
+    
+    for country in countries_list:
+        if country in countries:
+           data = countries[country]
+           plt.plot(years, data, marker='o', label=country)
+           
+    plt.title(f'Health Nutrition and Population Statistics, Urban Population', fontsize=15)
+    plt.xlabel('Year', fontsize=12, color="brown")
+    plt.ylabel('Population', fontsize=12, color="brown")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+
+# Функція для створення стовпчастої діаграми
+def bar_chart_country_data(country, countries, years):
+    if country not in countries:
+        print(f"Даних для {country} немає!")
+        return
+
+    data = countries[country]
+    x = range(len(years))
+
+    plt.figure(figsize=(12, 7))
+    ax = plt.gca()
+    ax.bar(x, data, align='center')
+    plt.title(f'Urban Population Bar Chart for {country}', fontsize=15)
+    plt.xlabel('Year')
+    plt.ylabel('Population')
+    ax.set_xticks(x)
+    ax.set_xticklabels(years)
+    plt.tight_layout()
+    plt.show()
+
+
+# Основна програма
+filepath = 'C:/test/Health Nutrition and Population Statistics, urban population.csv'
+countries, years = load_data(filepath)
+
+# Меню вибору
+while True:
+    choice = input("Виберіть дію:\n 1 - Графік для України та Японії:\n 2 - Cтовпчаста діаграма для України:\n 3 - Стовпчаста діаграма для Японії:\n 4 - Вихід з програми:\n").strip().lower()
+    if choice == '1':
+        plot_country_data(['Ukraine','Japan'],countries,years)
+        
+    elif choice == '2':
+        bar_chart_country_data('Ukraine', countries, years)
+
+    elif choice == '3':
+        bar_chart_country_data('Japan', countries, years)
+
+    elif choice == '4':
+        print("Вихід з програми!")
+        break
+
+    else:
+        print("Неправильний ввід! Спробуйте ще раз.")
